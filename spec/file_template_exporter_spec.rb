@@ -13,19 +13,19 @@ describe FileTemplateExporter do
     end
 
     it "reads the empty template" do
-      File.should_receive(:read).with("/some/dir/file_template.xml").and_return("")
+      EmptyTemplate.should_receive(:read).with("file_template").and_return("")
 
       @exporter.to_xml
     end
 
     it "includes only the identifier" do
-      File.stub!(:read).with("/some/dir/file_template.xml").and_return("{{IDENTIFIER}}")
+      EmptyTemplate.stub!(:read).with("file_template").and_return("{{IDENTIFIER}}")
 
       @exporter.to_xml.should == "some project"
     end
 
     it "includes the identifier with other surrounding text" do
-      File.stub!(:read).with("/some/dir/file_template.xml").and_return("Identifier: {{IDENTIFIER}}")
+      EmptyTemplate.stub!(:read).with("file_template").and_return("Identifier: {{IDENTIFIER}}")
 
       @exporter.to_xml.should == "Identifier: some project"
     end

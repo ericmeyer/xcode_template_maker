@@ -1,4 +1,5 @@
 require "file_template"
+require "empty_template"
 require "file_template_exporter"
 
 Given /^I am creating a file template for "([^"]*)"$/ do |identifier|
@@ -33,6 +34,9 @@ Then /^my file template should have the following file definitions:$/ do |table|
 end
 
 
+When /^my file template has the form "([^"]*)"$/ do |content|
+  EmptyTemplate.stub!(:read).with("file_template").and_return(content)
+end
 
 When /^I export the file template to xml$/ do
   @xml = FileTemplateExporter.new(@file_template, File.join(PROJECT_ROOT, "features", "fixtures", "empty_templates")).to_xml

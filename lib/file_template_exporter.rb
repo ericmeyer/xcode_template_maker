@@ -1,5 +1,4 @@
-require "nokogiri"
-EMPTY_TEMPLATE_DIR = File.expand_path(File.join(File.dirname(__FILE__), "empty_templates"))
+require "empty_template"
 
 class FileTemplateExporter
   attr_reader :filename
@@ -11,6 +10,6 @@ class FileTemplateExporter
   end
 
   def to_xml
-    File.read(File.join(@empty_template_dir, "file_template.xml")).gsub("{{IDENTIFIER}}", @file_template.identifier)
+    EmptyTemplate.read("file_template").gsub("{{IDENTIFIER}}", @file_template.identifier)
   end
 end
