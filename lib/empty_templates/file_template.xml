@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Identifier</key>
+    <string>{{IDENTIFIER}}</string>
+    <key>Kind</key>
+    <string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+    <key>Definitions</key>
+    <dict>
+      {{FILE_DEFINITIONS}}
+    </dict>
+    
+    <key>Nodes</key>
+    <array>
+      {{FILE_DEFINITIONS_LIST}}
+    </array>
+  </dict>
+</plist>

@@ -1,0 +1,9 @@
+<key>{{INPUT_PATH}}</key>
+<dict>
+  <key>Group</key>
+  <array>
+    {{GROUP_PATH}}
+  </array>
+  <key>Path</key>
+  <string>{{OUTPUT_PATH}}</string>
+</dict>

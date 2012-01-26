@@ -1,4 +1,5 @@
 require "file_template"
+require "file_template_exporter"
 
 Given /^I am creating a file template for "([^"]*)"$/ do |identifier|
   @file_template = FileTemplate.new(:identifier => identifier, :template_root => File.join(PROJECT_ROOT, "features", "fixtures"))
@@ -29,4 +30,14 @@ Then /^my file template should have the following file definitions:$/ do |table|
       file_definition_actual.include_in_target?.should == false
     end
   end
+end
+
+
+
+When /^I export the file template to xml$/ do
+  @xml = FileTemplateExporter.new(@file_template, File.join(PROJECT_ROOT, "features", "fixtures", "empty_templates")).to_xml
+end
+
+Then /^the xml should include "([^"]*)"$/ do |text|
+  @xml.should include(text)
 end
