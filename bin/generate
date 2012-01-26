@@ -1,0 +1,28 @@
+#! /usr/bin/ruby
+$: << File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
+require "file_template"
+require "file_template_exporter"
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: generate [options]"
+
+  opts.on("-r x", "--project-root", :required, "Project Root") do |project_root|
+    options[:project_root] = File.expand_path(project_root)
+  end
+  
+  opts.on("-d x,y,z", "--directory-list", Array, 
+          "List of directories in project to include files from" ) do |dirs|
+    options[:directories] = dirs
+  end
+  
+  opts.on("-i x", "--identifier", String, "Identifier") do |identifier|
+    options[:identifier] = identifier
+  end
+end.parse!(ARGV)
+
+file_template = FileTemplate.new(:identifier => options[:identifier], :project_root => options[:project_root])
+options[:directories].each { |dir| file_template.include_dir(dir) }
+file_template_exporter = FileTemplateExporter.new(file_template)
+puts file_template_exporter.to_xml
