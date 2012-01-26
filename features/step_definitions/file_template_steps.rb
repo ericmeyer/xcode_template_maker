@@ -3,7 +3,7 @@ require "empty_template"
 require "file_template_exporter"
 
 Given /^I am creating a file template for "([^"]*)"$/ do |identifier|
-  @file_template = FileTemplate.new(:identifier => identifier, :template_root => File.join(PROJECT_ROOT, "features", "fixtures"))
+  @file_template = FileTemplate.new(:identifier => identifier, :project_root => File.join(PROJECT_ROOT, "features", "fixtures"))
 end
 
 When /^I include the "([^"]*)" directory$/ do |path|
@@ -34,8 +34,12 @@ Then /^my file template should have the following file definitions:$/ do |table|
 end
 
 
-When /^my file template has the form "([^"]*)"$/ do |content|
+Given /^my file template has the form "([^"]*)"$/ do |content|
   EmptyTemplate.stub!(:read).with("file_template").and_return(content)
+end
+
+Given /^my file definition template has the form "([^"]*)"$/ do |content|
+  EmptyTemplate.stub!(:read).with("file_definition").and_return(content)
 end
 
 When /^I export the file template to xml$/ do

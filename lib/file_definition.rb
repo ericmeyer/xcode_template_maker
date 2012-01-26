@@ -1,5 +1,5 @@
 class FileDefinition
-  attr_reader :input_path, :group_path, :output_path
+  attr_accessor :input_path, :group_path, :output_path
   
   def initialize(options)
     @input_path = options[:input_path]

@@ -3,6 +3,7 @@ Feature: File template exporter
   Background:
     Given I am creating a file template for "com.bob.MyFirstApp"
     And I include the "hello" directory
+    And my file definition template has the form ""
   
   Scenario: To XML includes the identifier
     When my file template has the form "Identifier: {{IDENTIFIER}}"
