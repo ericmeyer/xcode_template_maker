@@ -20,6 +20,6 @@ class FileTemplate
 
   def files_in_dir(path)
     full_path = path.match(/^\//) ? path : File.join(project_root, path)
-    Dir.glob(File.join(full_path, "**/*"))
+    Dir.glob(File.join(full_path, "**/*")).reject { |path| File.directory? path }
   end
 end

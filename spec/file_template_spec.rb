@@ -2,6 +2,7 @@ require "file_template"
 
 describe FileTemplate do
   before(:each) do
+    File.stub!(:directory?).and_return(false)
     @file_template = FileTemplate.new({
       :identifier => "com.bob.project",
       :project_root => "/path/to/project"
@@ -32,7 +33,7 @@ describe FileTemplate do
     @file_template.include_dir("files/")
   end
 
-  context '#files' do
+  context '#file_definitions' do
     it "has none to start" do
       @file_template.file_definitions.should == []
     end
@@ -84,6 +85,17 @@ describe FileTemplate do
         @file_template.include_dir("/path/to/project/dir")
 
         @file_template.file_definitions[0].include_in_target?.should == false
+      end
+    end
+
+    context "glob returns nested directories" do
+      it "doesn't inlcude a single directory" do
+        Dir.stub!(:glob).and_return(["/path/to/project/nested/directory"])
+        File.should_receive(:directory?).with("/path/to/project/nested/directory").and_return(true)
+        
+        @file_template.include_dir("/path/to/project/nested")
+        
+        @file_template.file_definitions.should == []
       end
     end
   end
