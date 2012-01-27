@@ -1,0 +1,4 @@
+identifier: project.HelloWorld
+project_root: features/fixtures
+included_dirs:
+- hello
