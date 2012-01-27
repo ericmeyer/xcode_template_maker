@@ -10,7 +10,7 @@
     <dict>
       {{FILE_DEFINITIONS}}
     </dict>
-    
+
     <key>Nodes</key>
     <array>
       {{FILE_DEFINITIONS_LIST}}

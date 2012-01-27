@@ -14,4 +14,6 @@ Feature: File Template
      | hello/different_world.h | hello      | hello/different_world.h | false              |
      | hello/world.h           | hello      | hello/world.h           | false              |
      | hello/world.m           | hello      | hello/world.m           | true               |
-    # And my file template should have a target
+
+
+  Scenario: nested directories

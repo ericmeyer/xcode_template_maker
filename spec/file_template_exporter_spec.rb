@@ -10,7 +10,7 @@ describe FileTemplateExporter do
   context "to_xml with no file definitions" do
     before(:each) do
       @file_template = FileTemplate.new({:identifier => "some project"})
-      @exporter = FileTemplateExporter.new(@file_template, "/some/dir")
+      @exporter = FileTemplateExporter.new(@file_template)
       EmptyTemplate.stub!(:read).and_return("")
     end
 
@@ -31,15 +31,15 @@ describe FileTemplateExporter do
 
       @exporter.to_xml.should == "Identifier: some project"
     end
-    
+
     it "replaces the FILE_DEFINITIONS with nothing" do
       EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS}}")
-      
+
       @exporter.to_xml.should == ""
     end
   end
-  
-  context "to_xml with one file definitions" do
+
+  context "to_xml with one file definition" do
     before(:each) do
       @file_template = FileTemplate.new({:identifier => "some project"})
       @file_definition = FileDefinition.new({
@@ -49,7 +49,7 @@ describe FileTemplateExporter do
         :include_in_target => true
       })
       @file_template.stub!(:file_definitions).and_return([@file_definition])
-      @exporter = FileTemplateExporter.new(@file_template, "/some/dir")
+      @exporter = FileTemplateExporter.new(@file_template)
       EmptyTemplate.stub!(:read).and_return("")
       EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS}}")
     end
@@ -65,7 +65,7 @@ describe FileTemplateExporter do
 
       @exporter.to_xml.should == "some/output/path"
     end
-    
+
     it "includes a one level group" do
       EmptyTemplate.stub!(:read).with("file_definition").and_return("{{GROUP_PATH}}")
 
@@ -79,9 +79,29 @@ describe FileTemplateExporter do
       @exporter.to_xml.should == "<string>group</string>\n<string>path</string>"
     end
   end
+
+  context "to_xml with two file definitions" do
+    before(:each) do
+      @file_template = FileTemplate.new({:identifier => "some project"})
+      @file_definition1 = FileDefinition.new({:input_path => "input1", :group_path => "group",
+                                             :output_path => "output1", :include_in_target => true})
+      @file_definition2 = FileDefinition.new({:input_path => "input2", :group_path => "group",
+                                             :output_path => "output2", :include_in_target => true})
+      @file_template.stub!(:file_definitions).and_return([@file_definition1, @file_definition2])
+      @exporter = FileTemplateExporter.new(@file_template)
+      EmptyTemplate.stub!(:read).and_return("")
+      EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS}}")
+    end
+
+    it "includes both of them" do
+      EmptyTemplate.stub!(:read).with("file_definition").and_return("{{INPUT_PATH}}:{{OUTPUT_PATH}}","{{INPUT_PATH}}:{{OUTPUT_PATH}}")
+
+      @exporter.to_xml.should == "input1:output1\ninput2:output2"
+    end
+  end
 end
 
-# 
+#
 # <?xml version="1.0" encoding="UTF-8"?>
 # <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 # <plist version="1.0">
@@ -103,7 +123,7 @@ end
 #         <string>cslim/src/ExecutorObjectiveC/StatementExecutor.m</string>
 #       </dict>
 #     </dict>
-#     
+#
 #     <key>Nodes</key>
 #     <array>
 #       <string>cslim/src/ExecutorObjectiveC/StatementExecutor.m</string>

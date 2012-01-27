@@ -33,17 +33,12 @@ Then /^my file template should have the following file definitions:$/ do |table|
   end
 end
 
-
-Given /^my file template has the form "([^"]*)"$/ do |content|
-  EmptyTemplate.stub!(:read).with("file_template").and_return(content)
-end
-
-Given /^my file definition template has the form "([^"]*)"$/ do |content|
-  EmptyTemplate.stub!(:read).with("file_definition").and_return(content)
+Given /^I am using the test empty templates$/ do
+  EmptyTemplate.empty_template_dir = File.join(PROJECT_ROOT, "features", "fixtures", "empty_templates")
 end
 
 When /^I export the file template to xml$/ do
-  @xml = FileTemplateExporter.new(@file_template, File.join(PROJECT_ROOT, "features", "fixtures", "empty_templates")).to_xml
+  @xml = FileTemplateExporter.new(@file_template).to_xml
 end
 
 Then /^the xml should include "([^"]*)"$/ do |text|

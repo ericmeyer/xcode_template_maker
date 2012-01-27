@@ -9,7 +9,7 @@ class FileTemplate
     @kind = "Xcode.Xcode3.ProjectTemplateUnitKind"
     @file_definitions = []
   end
-  
+
   def include_dir(path)
     full_path = path.match(/^\//) ? path : File.join(project_root, path)
     Dir.glob(File.join(full_path, "**/*")).each do |path|
