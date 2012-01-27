@@ -4,6 +4,7 @@ require "yaml"
 class YAMLFileTemplate
 
   def self.load_from_yaml(yaml)
+    # move to FileTemplate.new(YAML.load(yaml))
     parsed_options = YAML.load(yaml)
     file_template = FileTemplate.new({
       :identifier => parsed_options["identifier"],
