@@ -7,7 +7,7 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: generate [options]"
+  opts.banner = "Usage: generate -y [path/to/yaml/file]"
 
   opts.on("-y x", "--yaml", String, :REQUIRED, "YAML Configuration for template") do |yaml_path|
     options[:relative_yaml_path] = yaml_path
