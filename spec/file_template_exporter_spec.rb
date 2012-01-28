@@ -37,6 +37,12 @@ describe FileTemplateExporter do
 
       @exporter.to_xml.should == ""
     end
+
+    it "replaces the file definition list with nothing" do
+      EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS_LIST}}")
+
+      @exporter.to_xml.should == ""
+    end
   end
 
   context "to_xml with one file definition" do
@@ -78,6 +84,12 @@ describe FileTemplateExporter do
 
       @exporter.to_xml.should == "<string>group</string>\n<string>path</string>"
     end
+
+    it "includes one file in the file definition list" do
+      EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS_LIST}}")
+
+      @exporter.to_xml.should == "<string>some/input/path</string>"
+    end
   end
 
   context "to_xml with two file definitions" do
@@ -93,10 +105,16 @@ describe FileTemplateExporter do
       EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS}}")
     end
 
-    it "includes both of them" do
+    it "includes both of them in the FILE_DEFINITIONS section" do
       EmptyTemplate.stub!(:read).with("file_definition").and_return("{{INPUT_PATH}}:{{OUTPUT_PATH}}","{{INPUT_PATH}}:{{OUTPUT_PATH}}")
 
       @exporter.to_xml.should == "input1:output1\ninput2:output2"
+    end
+
+    it "includes both input paths in the FILE_DEFINITIONS_LIST section" do
+      EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS_LIST}}")
+
+      @exporter.to_xml.should == "<string>input1</string>\n<string>input2</string>"
     end
   end
 end
