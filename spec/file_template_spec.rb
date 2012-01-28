@@ -1,8 +1,13 @@
 require "file_template"
+require "fileutils"
+require 'fakefs/spec_helpers'
 
 describe FileTemplate do
+  include FakeFS::SpecHelpers
+
   before(:each) do
-    File.stub!(:directory?).and_return(false)
+    FakeFS::FileSystem.clear
+    FileUtils.mkdir_p("/path/to/project")
     @file_template = FileTemplate.new({
       :identifier => "com.bob.project",
       :project_root => "/path/to/project"
@@ -21,18 +26,6 @@ describe FileTemplate do
     @file_template.kind.should == "Xcode.Xcode3.ProjectTemplateUnitKind"
   end
 
-  it "reads the contents of a directory" do
-    Dir.should_receive(:glob).with("/path/to/project/files/**/*").and_return([])
-
-    @file_template.include_dir("/path/to/project/files/")
-  end
-
-  it "works with a relative file path" do
-    Dir.should_receive(:glob).with("/path/to/project/files/**/*").and_return([])
-
-    @file_template.include_dir("files/")
-  end
-
   context '#file_definitions' do
     it "has none to start" do
       @file_template.file_definitions.should == []
@@ -40,7 +33,8 @@ describe FileTemplate do
 
     context "adding a single *.h file in the root dir" do
       before(:each) do
-        Dir.stub!(:glob).and_return(["/path/to/project/dir/foo.h"])
+        FileUtils.mkdir_p("/path/to/project/dir")
+        FileUtils.touch("/path/to/project/dir/foo.h")
         @file_template.include_dir("/path/to/project/dir")
       end
 
@@ -66,35 +60,37 @@ describe FileTemplate do
     end
 
     context "adding other files" do
+      before(:each) do
+        FileUtils.mkdir_p("/path/to/project/dir")
+      end
+
       it "does include the *.m file in the target" do
-        Dir.stub!(:glob).and_return(["/path/to/project/dir/foo.m"])
+        FileUtils.touch("/path/to/project/dir/foo.m")
         @file_template.include_dir("/path/to/project/dir")
 
         @file_template.file_definitions[0].include_in_target?.should == true
       end
 
       it "does include the *.c file in the target" do
-        Dir.stub!(:glob).and_return(["/path/to/project/dir/foo.c"])
+        FileUtils.touch("/path/to/project/dir/foo.c")
         @file_template.include_dir("/path/to/project/dir")
 
         @file_template.file_definitions[0].include_in_target?.should == true
       end
 
       it "does not include a different file in the target" do
-        Dir.stub!(:glob).and_return(["/path/to/project/dir/foo.bar"])
-        @file_template.include_dir("/path/to/project/dir")
+        FileUtils.touch("/path/to/project/dir/foo.bar")
 
+        @file_template.include_dir("/path/to/project/dir")
         @file_template.file_definitions[0].include_in_target?.should == false
       end
     end
 
     context "glob returns nested directories" do
       it "doesn't inlcude a single directory" do
-        Dir.stub!(:glob).and_return(["/path/to/project/nested/directory"])
-        File.should_receive(:directory?).with("/path/to/project/nested/directory").and_return(true)
-        
+        FileUtils.mkdir_p "/path/to/project/nested/directory"
         @file_template.include_dir("/path/to/project/nested")
-        
+
         @file_template.file_definitions.should == []
       end
     end
