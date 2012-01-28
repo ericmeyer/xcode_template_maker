@@ -14,7 +14,13 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-yaml = File.read(options[:relative_yaml_path])
-file_template = YAMLFileTemplate.load_from_yaml(yaml)
-file_template_exporter = FileTemplateExporter.new(file_template)
-puts file_template_exporter.to_xml
+if options[:relative_yaml_path].nil?
+  puts "Misisng the -y option"
+elsif !File.exists?(options[:relative_yaml_path])
+  puts "YAML file: #{options[:relative_yaml_path]} does not exist"
+else
+  yaml = File.read(options[:relative_yaml_path])
+  file_template = YAMLFileTemplate.load_from_yaml(yaml)
+  file_template_exporter = FileTemplateExporter.new(file_template)
+  puts file_template_exporter.to_xml
+end
