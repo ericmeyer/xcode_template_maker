@@ -9,33 +9,12 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: generate [options]"
 
-  opts.on("-r x", "--project-root", :required, "Project Root") do |project_root|
-    options[:project_root] = File.expand_path(project_root)
-  end
-
-  opts.on("-d x,y,z", "--directory-list", Array,
-          "List of directories in project to include files from" ) do |dirs|
-    options[:directories] = dirs
-  end
-
-  opts.on("-i x", "--identifier", String, "Identifier") do |identifier|
-    options[:identifier] = identifier
-  end
-
-  opts.on("-y x", "--yaml", String, "YAML Configuration for template") do |yaml_path|
+  opts.on("-y x", "--yaml", String, :REQUIRED, "YAML Configuration for template") do |yaml_path|
     options[:relative_yaml_path] = yaml_path
   end
-end.parse!(ARGV)
+end.parse!
 
-
-if options[:relative_yaml_path]
-  yaml = File.read(options[:relative_yaml_path])
-  file_template = YAMLFileTemplate.load_from_yaml(yaml)
-  file_template_exporter = FileTemplateExporter.new(file_template)
-  puts file_template_exporter.to_xml
-else
-  file_template = FileTemplate.new(:identifier => options[:identifier], :project_root => options[:project_root])
-  options[:directories].each { |dir| file_template.include_dir(dir) }
-  file_template_exporter = FileTemplateExporter.new(file_template)
-  puts file_template_exporter.to_xml
-end
+yaml = File.read(options[:relative_yaml_path])
+file_template = YAMLFileTemplate.load_from_yaml(yaml)
+file_template_exporter = FileTemplateExporter.new(file_template)
+puts file_template_exporter.to_xml
