@@ -32,7 +32,12 @@ class FileTemplateExporter
     file_definition_template.gsub!("{{INPUT_PATH}}", file_definition.input_path)
     file_definition_template.gsub!("{{OUTPUT_PATH}}", file_definition.output_path)
     file_definition_template.gsub!("{{GROUP_PATH}}", group_path_to_xml(file_definition.group_path))
+    file_definition_template.gsub!("{{EXCLUDE_FROM_TARGET}}", include_in_target_string(file_definition))
     return file_definition_template
+  end
+
+  def include_in_target_string(file_definition)
+    file_definition.include_in_target? ? "" : "<key>TargetIndices</key>\n<array/>\n"
   end
 
   def group_path_to_xml(group_path)

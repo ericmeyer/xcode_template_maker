@@ -117,6 +117,27 @@ describe FileTemplateExporter do
       @exporter.to_xml.should == "<string>input1</string>\n<string>input2</string>"
     end
   end
+
+  context "include_in_target?" do
+    before(:each) do
+      @file_template = FileTemplate.new({:identifier => "some project"})
+      @file_definition = FileDefinition.new({:input_path => "input1", :group_path => "group",
+                                             :output_path => "output1", :include_in_target => false})
+      @file_template.stub!(:file_definitions).and_return([@file_definition])
+      @exporter = FileTemplateExporter.new(@file_template)
+      EmptyTemplate.stub!(:read).and_return("{{EXCLUDE_FROM_TARGET}}")
+      EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS}}")
+    end
+
+    it "has a section to exclude the file definition from the target if it should not be included" do
+      @exporter.to_xml.should match("<key>TargetIndices</key>\n<array/>")
+    end
+
+    it "replaces it with nothing for files that should be included" do
+      @file_definition.include_in_target = true
+      @exporter.to_xml.should == ""
+    end
+  end
 end
 
 #

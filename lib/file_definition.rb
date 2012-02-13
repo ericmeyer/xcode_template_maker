@@ -1,5 +1,5 @@
 class FileDefinition
-  attr_accessor :input_path, :group_path, :output_path
+  attr_accessor :input_path, :group_path, :output_path, :include_in_target
 
   def self.build(project_root, file_path)
     relative_file_path = file_path.gsub("#{File.expand_path(project_root)}/", "")

@@ -6,4 +6,5 @@
   </array>
   <key>Path</key>
   <string>{{OUTPUT_PATH}}</string>
+  {{EXCLUDE_FROM_TARGET}}
 </dict>
