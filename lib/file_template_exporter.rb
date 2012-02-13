@@ -37,7 +37,7 @@ class FileTemplateExporter
   end
 
   def include_in_target_string(file_definition)
-    file_definition.include_in_target? ? "" : "<key>TargetIndices</key>\n<array/>\n"
+    file_definition.include_in_target? ? "" : "<key>TargetIndices</key>\n<array/>"
   end
 
   def group_path_to_xml(group_path)
