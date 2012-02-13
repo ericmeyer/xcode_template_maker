@@ -7,7 +7,7 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: generate -y [path/to/yaml/file]"
+  opts.banner = "Usage: export_xcode_file_list -y [path/to/yaml/file]"
 
   opts.on("-y x", "--yaml", String, :REQUIRED, "YAML Configuration for template") do |yaml_path|
     options[:relative_yaml_path] = yaml_path
@@ -15,7 +15,7 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:relative_yaml_path].nil?
-  puts "Misisng the -y option"
+  puts "Usage: export_xcode_file_list -y [path/to/yaml/file]"
 elsif !File.exists?(options[:relative_yaml_path])
   puts "YAML file: #{options[:relative_yaml_path]} does not exist"
 else
