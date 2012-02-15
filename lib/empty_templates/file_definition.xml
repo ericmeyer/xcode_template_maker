@@ -1,10 +1,10 @@
-<key>{{INPUT_PATH}}</key>
+<key>{{OUTPUT_PATH}}</key>
 <dict>
   <key>Group</key>
   <array>
     {{GROUP_PATH}}
   </array>
   <key>Path</key>
-  <string>{{OUTPUT_PATH}}</string>
+  <string>{{INPUT_PATH}}</string>
   {{EXCLUDE_FROM_TARGET}}
 </dict>

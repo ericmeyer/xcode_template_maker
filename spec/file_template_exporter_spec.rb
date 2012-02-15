@@ -88,7 +88,7 @@ describe FileTemplateExporter do
     it "includes one file in the file definition list" do
       EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS_LIST}}")
 
-      @exporter.to_xml.should == "<string>some/input/path</string>"
+      @exporter.to_xml.should == "<string>some/output/path</string>"
     end
   end
 
@@ -114,7 +114,7 @@ describe FileTemplateExporter do
     it "includes both input paths in the FILE_DEFINITIONS_LIST section" do
       EmptyTemplate.stub!(:read).with("file_template").and_return("{{FILE_DEFINITIONS_LIST}}")
 
-      @exporter.to_xml.should == "<string>input1</string>\n<string>input2</string>"
+      @exporter.to_xml.should == "<string>output1</string>\n<string>output2</string>"
     end
   end
 

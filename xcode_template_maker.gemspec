@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name        = "xcode_template_maker"
-  s.version     = "0.0.2"
+  s.version     = "0.0.3"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Eric Meyer"]
   s.email       = ["emeyer@8thlight.com"]

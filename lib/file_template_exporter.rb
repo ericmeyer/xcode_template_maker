@@ -23,7 +23,7 @@ class FileTemplateExporter
 
   def file_definition_list_as_xml
     file_definitions.collect do |file_definition|
-      "<string>#{file_definition.input_path}</string>"
+      "<string>#{file_definition.output_path}</string>"
     end.join("\n")
   end
 

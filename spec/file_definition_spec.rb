@@ -83,6 +83,11 @@ describe FileDefinition, '#build' do
       file_definition.include_in_target?.should == true
     end
 
+    it "includes .sh files" do
+      file_definition = FileDefinition.build("/foo", "bar.sh")
+      file_definition.include_in_target?.should == true
+    end
+
     it "defaults to not inlcuding" do
       file_definition = FileDefinition.build("/foo", "bar.foo")
       file_definition.include_in_target?.should == false
