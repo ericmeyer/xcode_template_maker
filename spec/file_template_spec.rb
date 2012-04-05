@@ -10,7 +10,8 @@ describe FileTemplate do
     FileUtils.mkdir_p("/path/to/project")
     @file_template = FileTemplate.new({
       :identifier => "com.bob.project",
-      :project_root => "/path/to/project"
+      :project_root => "/path/to/project",
+      :excluded_files => ['bad_juju.h']
     })
   end
 
@@ -90,6 +91,16 @@ describe FileTemplate do
       it "doesn't inlcude a single directory" do
         FileUtils.mkdir_p "/path/to/project/nested/directory"
         @file_template.include_dir("/path/to/project/nested")
+
+        @file_template.file_definitions.should == []
+      end
+    end
+
+    context "excluding files" do
+      it "doesnt include any files that are excluded" do
+        FileUtils.mkdir_p "/path/to/project/dir"
+        FileUtils.touch("/path/to/project/dir/bad_juju.h")
+        @file_template.include_dir("/path/to/project/dir")
 
         @file_template.file_definitions.should == []
       end

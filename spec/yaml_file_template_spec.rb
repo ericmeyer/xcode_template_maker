@@ -7,6 +7,8 @@ describe YAMLFileTemplate do
 identifier: some.project.ident
 project_root: ../project
 included_dirs: []
+excluded_files:
+- myFile.m
 YAML
       @file_template = YAMLFileTemplate.load_from_yaml(@yaml)
     end
@@ -21,6 +23,10 @@ YAML
 
     it "has no file definitions" do
       @file_template.file_definitions.should == []
+    end
+
+    it "has the excluded files" do
+      @file_template.excluded_files.should == ['myFile.m']
     end
   end
 
