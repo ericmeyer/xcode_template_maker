@@ -7,7 +7,8 @@ class YAMLFileTemplate
     parsed_options = YAML.load(yaml)
     file_template = FileTemplate.new({
       :identifier => parsed_options["identifier"],
-      :project_root => parsed_options["project_root"]
+      :project_root => parsed_options["project_root"],
+      :excluded_files => parsed_options["excluded_files"]
     })
     parsed_options["included_dirs"].each do |dir|
       file_template.include_dir(dir)
